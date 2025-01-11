@@ -21,6 +21,9 @@ RUN python3 -m venv /opt/venv
 # Обновляем pip в виртуальном окружении
 RUN /opt/venv/bin/pip install --upgrade pip
 
+# Выводим версию pip для диагностики
+RUN /opt/venv/bin/pip --version
+
 # Устанавливаем зависимости из requirements.txt
 RUN /opt/venv/bin/pip install -r requirements.txt
 

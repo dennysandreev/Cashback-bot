@@ -30,17 +30,11 @@ RUN /opt/venv/bin/pip install cython
 # Копируем файлы requirements.txt в рабочую директорию
 COPY requirements.txt .
 
-# Выводим версию pip для диагностики
-RUN /opt/venv/bin/pip --version
-
-# Выводим содержимое requirements.txt для диагностики
-RUN cat requirements.txt
-
 # Устанавливаем зависимости из requirements.txt
 RUN /opt/venv/bin/pip install -r requirements.txt --no-cache-dir
 
 # Устанавливаем совместимые версии numpy, blis, thinc, spacy и pydantic
-RUN /opt/venv/bin/pip install numpy==1.23.5 blis==0.7.9 thinc==8.0.15 spacy==3.1.6 pydantic==1.8.2 --no-cache-dir
+RUN /opt/venv/bin/pip install numpy==1.23.5 blis==0.7.9 thinc==8.1.10 spacy==3.5.0 pydantic==1.10.5 --no-cache-dir
 
 # Копируем остальные файлы проекта в рабочую директорию
 COPY . .

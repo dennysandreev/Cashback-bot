@@ -27,8 +27,8 @@ RUN python3 -m venv /opt/venv
 # Обновляем pip в виртуальном окружении
 RUN /opt/venv/bin/pip install --upgrade pip
 
-# Устанавливаем Cython перед установкой зависимостей
-RUN /opt/venv/bin/pip install cython
+# Устанавливаем Cython и numpy перед установкой зависимостей
+RUN /opt/venv/bin/pip install cython numpy==1.21.0
 
 # Выводим версию pip для диагностики
 RUN /opt/venv/bin/pip --version

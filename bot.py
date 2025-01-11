@@ -33,11 +33,15 @@ main_menu.add(KeyboardButton("Добавить карту"),
 default_back = ReplyKeyboardMarkup(resize_keyboard=True)
 default_back.add(KeyboardButton("Вернуться в главное меню"))
 
+def initialize_user_data(user_id):
+    """ Инициализация данных пользователя, если их еще нет """
+    if user_id not in user_data:
+        user_data[user_id] = {"cards": {}}
+
 @dp.message_handler(commands=['start', 'help'])
 async def send_welcome(message: types.Message):
     user_id = message.from_user.id
-    if user_id not in user_data:
-        user_data[user_id] = {"cards": {}}
+    initialize_user_data(user_id)
 
     await message.reply(
         "Привет! Я помогу тебе выбрать карту с максимальным кэшбэком для твоих покупок. Что хочешь сделать?",
@@ -47,12 +51,14 @@ async def send_welcome(message: types.Message):
 @dp.message_handler(lambda message: message.text == "Добавить карту")
 async def add_card(message: types.Message):
     user_id = message.from_user.id
+    initialize_user_data(user_id)
     user_data[user_id]["step"] = "add_card_name"
     await message.reply("Введите название банка и тип карты (например, Тинькофф Платинум):", reply_markup=default_back)
 
 @dp.message_handler(lambda message: "step" in user_data.get(message.from_user.id, {}) and user_data[message.from_user.id]["step"] == "add_card_name")
 async def add_card_name(message: types.Message):
     user_id = message.from_user.id
+    initialize_user_data(user_id)
     user_data[user_id]["current_card"] = {"name": message.text, "categories": []}
     user_data[user_id]["step"] = "add_card_categories"
     await message.reply("Какие категории у этой карты с повышенным кэшбэком? Перечислите через запятую или нажмите 'Обновить автоматически'.", reply_markup=default_back)
@@ -60,6 +66,7 @@ async def add_card_name(message: types.Message):
 @dp.message_handler(lambda message: "step" in user_data.get(message.from_user.id, {}) and user_data[message.from_user.id]["step"] == "add_card_categories")
 async def add_card_categories(message: types.Message):
     user_id = message.from_user.id
+    initialize_user_data(user_id)
     categories = message.text.split(",")
     user_data[user_id]["current_card"]["categories"] = [cat.strip() for cat in categories]
     card = user_data[user_id]["current_card"]
@@ -71,6 +78,7 @@ async def add_card_categories(message: types.Message):
 @dp.message_handler(lambda message: message.text == "Посмотреть текущие категории кэшбэка")
 async def view_categories(message: types.Message):
     user_id = message.from_user.id
+    initialize_user_data(user_id)
     cards = user_data[user_id].get("cards", {})
     if not cards:
         await message.reply("У вас ещё нет добавленных карт. Нажмите 'Добавить карту'.", reply_markup=main_menu)
@@ -83,12 +91,14 @@ async def view_categories(message: types.Message):
 @dp.message_handler(lambda message: message.text == "Найти карту для покупки")
 async def find_card(message: types.Message):
     user_id = message.from_user.id
+    initialize_user_data(user_id)
     user_data[user_id]["step"] = "find_card"
     await message.reply("Что вы хотите купить? Опишите товар или услугу.", reply_markup=default_back)
 
 @dp.message_handler(lambda message: "step" in user_data.get(message.from_user.id, {}) and user_data[message.from_user.id]["step"] == "find_card")
 async def analyze_purchase(message: types.Message):
     user_id = message.from_user.id
+    initialize_user_data(user_id)
     user_data[user_id].pop("step", None)
 
     # Определяем категории на основе текста

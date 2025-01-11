@@ -1,4 +1,3 @@
-# setup.py
 import spacy
 
 def download_model():

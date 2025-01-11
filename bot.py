@@ -1,6 +1,7 @@
-from aiogram import Bot, Dispatcher, executor, types
+from aiogram import Bot, Dispatcher, types
 from aiogram.types import ReplyKeyboardMarkup, KeyboardButton
 import logging
+import asyncio
 
 # Bot Token
 API_TOKEN = '8178674621:AAHrwgT7ZM9ackE7zll5fnvVKa62wanjt_M'
@@ -113,5 +114,8 @@ async def analyze_purchase(message: types.Message):
     else:
         await message.reply("У вас нет карты с кэшбэком для этой категории.", reply_markup=main_menu)
 
+async def main():
+    await dp.start_polling()
+
 if __name__ == '__main__':
-    executor.start_polling(dp, skip_updates=True)
+    asyncio.run(main())

@@ -1,10 +1,14 @@
+import os
 from aiogram import Bot, Dispatcher, types
 from aiogram.types import ReplyKeyboardMarkup, KeyboardButton
 import logging
 import asyncio
 
-# Bot Token
-API_TOKEN = 'YOUR_BOT_TOKEN_HERE'
+# Получение токена из переменной окружения
+API_TOKEN = os.getenv('API_TOKEN')
+
+if not API_TOKEN:
+    raise ValueError("No API token provided. Please set the API_TOKEN environment variable.")
 
 # Logging
 logging.basicConfig(level=logging.INFO)

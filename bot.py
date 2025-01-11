@@ -3,7 +3,7 @@ from aiogram.types import ReplyKeyboardMarkup, KeyboardButton
 import logging
 
 # Bot Token
-API_TOKEN = 'YOUR_TELEGRAM_BOT_TOKEN'
+API_TOKEN = '8178674621:AAHrwgT7ZM9ackE7zll5fnvVKa62wanjt_M'
 
 # Logging
 logging.basicConfig(level=logging.INFO)

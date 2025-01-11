@@ -10,16 +10,19 @@ RUN apt-get update && apt-get install -y \
     gcc \
     libffi-dev \
     libssl-dev \
-    make \
     && apt-get clean
 
 # Копируем файлы requirements.txt в рабочую директорию
 COPY requirements.txt .
 
-# Создаем виртуальное окружение и устанавливаем зависимости
-RUN python3 -m venv /opt/venv && \
-    /opt/venv/bin/pip install --upgrade pip && \
-    /opt/venv/bin/pip install -r requirements.txt
+# Создаем виртуальное окружение
+RUN python3 -m venv /opt/venv
+
+# Обновляем pip в виртуальном окружении
+RUN /opt/venv/bin/pip install --upgrade pip
+
+# Устанавливаем зависимости из requirements.txt
+RUN /opt/venv/bin/pip install -r requirements.txt
 
 # Копируем остальные файлы проекта в рабочую директорию
 COPY . .

@@ -4,12 +4,14 @@ FROM python:3.11-slim
 # Устанавливаем рабочую директорию
 WORKDIR /app
 
+# Устанавливаем зависимости, необходимые для создания виртуального окружения
+RUN apt-get update && apt-get install -y python3-venv gcc
+
 # Копируем файлы requirements.txt в рабочую директорию
 COPY requirements.txt .
 
-# Обновляем pip и устанавливаем зависимости
-RUN apt-get update && apt-get install -y python3-venv && \
-    python3 -m venv /opt/venv && \
+# Создаем виртуальное окружение и устанавливаем зависимости
+RUN python3 -m venv /opt/venv && \
     /opt/venv/bin/pip install --upgrade pip && \
     /opt/venv/bin/pip install -r requirements.txt
 

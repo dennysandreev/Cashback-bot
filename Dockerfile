@@ -18,14 +18,17 @@ RUN apt-get update && apt-get install -y \
     zlib1g-dev \
     && apt-get clean
 
-# Копируем файлы requirements.txt в рабочую директорию
-COPY requirements.txt .
-
 # Создаем виртуальное окружение
 RUN python3 -m venv /opt/venv
 
 # Обновляем pip в виртуальном окружении
 RUN /opt/venv/bin/pip install --upgrade pip
+
+# Устанавливаем Cython и numpy перед установкой зависимостей
+RUN /opt/venv/bin/pip install cython numpy
+
+# Копируем файлы requirements.txt в рабочую директорию
+COPY requirements.txt .
 
 # Выводим версию pip для диагностики
 RUN /opt/venv/bin/pip --version
@@ -35,9 +38,6 @@ RUN cat requirements.txt
 
 # Устанавливаем зависимости из requirements.txt
 RUN /opt/venv/bin/pip install -r requirements.txt --no-cache-dir
-
-# Устанавливаем Cython и numpy после установки зависимостей
-RUN /opt/venv/bin/pip install cython numpy
 
 # Копируем остальные файлы проекта в рабочую директорию
 COPY . .

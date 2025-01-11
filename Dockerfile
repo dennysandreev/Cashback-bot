@@ -24,8 +24,11 @@ RUN /opt/venv/bin/pip install --upgrade pip
 # Выводим версию pip для диагностики
 RUN /opt/venv/bin/pip --version
 
+# Выводим содержимое requirements.txt для диагностики
+RUN cat requirements.txt
+
 # Устанавливаем зависимости из requirements.txt
-RUN /opt/venv/bin/pip install -r requirements.txt
+RUN /opt/venv/bin/pip install -r requirements.txt --no-cache-dir
 
 # Копируем остальные файлы проекта в рабочую директорию
 COPY . .

@@ -40,7 +40,7 @@ RUN cat requirements.txt
 RUN /opt/venv/bin/pip install -r requirements.txt --no-cache-dir
 
 # Устанавливаем numpy, blis, thinc и spaCy с совместимыми версиями
-RUN /opt/venv/bin/pip install numpy==1.21.0 blis==0.7.4 thinc==8.0.15 spacy==3.1.0 --no-cache-dir
+RUN /opt/venv/bin/pip install numpy==1.21.6 blis==0.7.7 thinc==8.1.0 spacy==3.1.6 --no-cache-dir
 
 # Копируем остальные файлы проекта в рабочую директорию
 COPY . .

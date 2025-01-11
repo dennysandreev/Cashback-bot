@@ -13,6 +13,9 @@ RUN apt-get update && apt-get install -y \
     build-essential \
     wget \
     git \
+    libxml2-dev \
+    libxslt1-dev \
+    zlib1g-dev \
     && apt-get clean
 
 # Копируем файлы requirements.txt в рабочую директорию

@@ -10,6 +10,9 @@ RUN apt-get update && apt-get install -y \
     gcc \
     libffi-dev \
     libssl-dev \
+    build-essential \
+    wget \
+    git \
     && apt-get clean
 
 # Копируем файлы requirements.txt в рабочую директорию

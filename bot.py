@@ -1,4 +1,5 @@
 import os
+import spacy
 from aiogram import Bot, Dispatcher, types
 from aiogram.types import ReplyKeyboardMarkup, KeyboardButton
 import logging
@@ -16,6 +17,9 @@ logging.basicConfig(level=logging.INFO)
 # Bot and Dispatcher setup
 bot = Bot(token=API_TOKEN)
 dp = Dispatcher(bot)
+
+# Загружаем модель spaCy для русского языка
+nlp = spacy.load("ru_core_news_sm")
 
 # User data storage (in-memory for simplicity)
 user_data = {}
@@ -87,18 +91,18 @@ async def analyze_purchase(message: types.Message):
     user_id = message.from_user.id
     user_data[user_id].pop("step", None)
 
-    # Dummy NLP model to classify categories (replace with actual NLP logic)
+    # Определяем категории на основе текста
     categories_map = {
         "электроника": ["колонка", "телевизор", "смартфон"],
         "одежда": ["пальто", "куртка", "джинсы"],
         "продукты": ["хлеб", "молоко", "сыр"]
     }
 
-    user_input = message.text.lower()
+    doc = nlp(message.text.lower())
     matched_category = None
 
     for category, keywords in categories_map.items():
-        if any(keyword in user_input for keyword in keywords):
+        if any(keyword in [token.text for token in doc] for keyword in keywords):
             matched_category = category
             break
 

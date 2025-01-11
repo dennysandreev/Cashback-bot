@@ -4,7 +4,7 @@ import logging
 import asyncio
 
 # Bot Token
-API_TOKEN = '8178674621:AAHrwgT7ZM9ackE7zll5fnvVKa62wanjt_M'
+API_TOKEN = 'YOUR_BOT_TOKEN_HERE'
 
 # Logging
 logging.basicConfig(level=logging.INFO)
@@ -38,8 +38,9 @@ async def send_welcome(message: types.Message):
 
 @dp.message_handler(lambda message: message.text == "Добавить карту")
 async def add_card(message: types.Message):
+    user_id = message.from_user.id
+    user_data[user_id]["step"] = "add_card_name"
     await message.reply("Введите название банка и тип карты (например, Тинькофф Платинум):", reply_markup=default_back)
-    user_data[message.from_user.id]["step"] = "add_card_name"
 
 @dp.message_handler(lambda message: "step" in user_data.get(message.from_user.id, {}) and user_data[message.from_user.id]["step"] == "add_card_name")
 async def add_card_name(message: types.Message):
@@ -73,8 +74,9 @@ async def view_categories(message: types.Message):
 
 @dp.message_handler(lambda message: message.text == "Найти карту для покупки")
 async def find_card(message: types.Message):
+    user_id = message.from_user.id
+    user_data[user_id]["step"] = "find_card"
     await message.reply("Что вы хотите купить? Опишите товар или услугу.", reply_markup=default_back)
-    user_data[message.from_user.id]["step"] = "find_card"
 
 @dp.message_handler(lambda message: "step" in user_data.get(message.from_user.id, {}) and user_data[message.from_user.id]["step"] == "find_card")
 async def analyze_purchase(message: types.Message):

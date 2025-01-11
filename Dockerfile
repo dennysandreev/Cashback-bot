@@ -27,9 +27,6 @@ RUN python3 -m venv /opt/venv
 # Обновляем pip в виртуальном окружении
 RUN /opt/venv/bin/pip install --upgrade pip
 
-# Устанавливаем Cython и numpy перед установкой зависимостей
-RUN /opt/venv/bin/pip install cython numpy==1.21.0
-
 # Выводим версию pip для диагностики
 RUN /opt/venv/bin/pip --version
 
@@ -38,6 +35,9 @@ RUN cat requirements.txt
 
 # Устанавливаем зависимости из requirements.txt
 RUN /opt/venv/bin/pip install -r requirements.txt --no-cache-dir
+
+# Устанавливаем Cython и numpy после установки зависимостей
+RUN /opt/venv/bin/pip install cython numpy
 
 # Копируем остальные файлы проекта в рабочую директорию
 COPY . .
